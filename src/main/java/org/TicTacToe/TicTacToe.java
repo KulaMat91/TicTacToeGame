@@ -8,12 +8,15 @@ public class TicTacToe {
 
 
         Board board = new Board();
+        board.printBoardNumbers();
+        System.out.println();
 
-        board.printBoard();
 
 //        Player Move
         Scanner scanner = new Scanner(System.in);
         playerTurn(board, scanner);
+        board.printBoard();
+
 
 //        Computer Move
         Random random = new Random();
@@ -23,6 +26,7 @@ public class TicTacToe {
                 break;
             }
         }
+
 
 
     }
@@ -51,40 +55,43 @@ public class TicTacToe {
                return false;
         }
     }
-
-
+    
     private static void playerTurn(Board board, Scanner scanner) {
 
         System.out.println("Where would you like to put your symbol?(Input: 1-9)");
         String userInput = scanner.nextLine();
 
+        playerMove(board, userInput, 'X');
+    }
+
+    private static void playerMove(Board board, String userInput, char symbol) {
         switch (userInput) {
             case "1":
-                board.getBoard()[0][0] = 'X';
+                board.getBoard()[0][0] = symbol;
                 break;
             case "2":
-                board.getBoard()[0][1] = 'X';
+                board.getBoard()[0][1] = symbol;
                 break;
             case "3":
-                board.getBoard()[0][2] = 'X';
+                board.getBoard()[0][2] = symbol;
                 break;
             case "4":
-                board.getBoard()[1][0] = 'X';
+                board.getBoard()[1][0] = symbol;
                 break;
             case "5":
-                board.getBoard()[1][1] = 'X';
+                board.getBoard()[1][1] = symbol;
                 break;
             case "6":
-                board.getBoard()[1][2] = 'X';
+                board.getBoard()[1][2] = symbol;
                 break;
             case "7":
-                board.getBoard()[2][0] = 'X';
+                board.getBoard()[2][0] = symbol;
                 break;
             case "8":
-                board.getBoard()[2][1] = 'X';
+                board.getBoard()[2][1] = symbol;
                 break;
             case "9":
-                board.getBoard()[2][2] = 'X';
+                board.getBoard()[2][2] = symbol;
                 break;
             default:
                 System.out.println("Wrong input");
