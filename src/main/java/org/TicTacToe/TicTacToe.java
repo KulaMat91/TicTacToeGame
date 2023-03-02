@@ -11,24 +11,74 @@ public class TicTacToe {
         board.printBoardNumbers();
         System.out.println();
 
-
+        while (true) {
 //        Player Move
-        Scanner scanner = new Scanner(System.in);
-        playerTurn(board, scanner);
-        board.printBoard();
-
-
+            playerTurn(board);
+            if (isGameFinished(board)) {
+                break;
+            }
+            board.printBoard();
 //        Computer Move
+            computerTurn(board);
+            if (isGameFinished(board)) {
+                break;
+            }
+            board.printBoard();
+        }
+
+    }
+
+    private static boolean isGameFinished(Board board) {
+        if (isWinner(board, 'X')) {
+            System.out.println("Player Wins!");
+            board.printBoard();
+            return true;
+        }
+        if (isWinner(board, 'O')) {
+            System.out.println("Computer Wins!");
+            board.printBoard();
+            return true;
+        }
+
+        for (int i = 0; i < board.getBoard().length; i++) {
+            for (int j = 0; j < board.getBoard().length; j++) {
+                if (board.getBoard()[i][j] == ' ') {
+                    return false;
+                }
+            }
+        }
+        board.printBoard();
+        System.out.println("Game is tie!");
+        return true;
+    }
+
+    private static boolean isWinner(Board board, char symbol) {
+        if ((board.getBoard()[0][0] == symbol && board.getBoard()[0][1] == symbol && board.getBoard()[0][2] == symbol) ||
+                (board.getBoard()[1][0] == symbol && board.getBoard()[1][1] == symbol && board.getBoard()[1][2] == symbol) ||
+                (board.getBoard()[2][0] == symbol && board.getBoard()[2][1] == symbol && board.getBoard()[2][2] == symbol) ||
+
+                (board.getBoard()[0][0] == symbol && board.getBoard()[1][0] == symbol && board.getBoard()[2][0] == symbol) ||
+                (board.getBoard()[0][1] == symbol && board.getBoard()[1][1] == symbol && board.getBoard()[2][1] == symbol) ||
+                (board.getBoard()[0][2] == symbol && board.getBoard()[1][2] == symbol && board.getBoard()[2][2] == symbol) ||
+
+                (board.getBoard()[0][0] == symbol && board.getBoard()[1][1] == symbol && board.getBoard()[2][2] == symbol) ||
+                (board.getBoard()[0][2] == symbol && board.getBoard()[1][1] == symbol && board.getBoard()[2][0] == symbol)) {
+            return true;
+        }
+        return false;
+    }
+
+    private static void computerTurn(Board board) {
         Random random = new Random();
-        while (true){
-            int computerTurn = random.nextInt(9) + 1;
-            if(isValidMove(board,computerTurn)){
+        int computerMove;
+        while (true) {
+            computerMove = random.nextInt(9) + 1;
+            if (isValidMove(board, computerMove)) {
                 break;
             }
         }
-
-
-
+        System.out.println("Computer choose: " + computerMove);
+        placeMove(board, Integer.toString(computerMove), 'O');
     }
 
     private static boolean isValidMove(Board board, int position) {
@@ -52,19 +102,30 @@ public class TicTacToe {
             case 9:
                 return board.getBoard()[2][2] == ' ';
             default:
-               return false;
+                return false;
         }
     }
-    
-    private static void playerTurn(Board board, Scanner scanner) {
 
-        System.out.println("Where would you like to put your symbol?(Input: 1-9)");
-        String userInput = scanner.nextLine();
-
-        playerMove(board, userInput, 'X');
+    private static void playerTurn(Board board) {
+        Scanner scanner = new Scanner(System.in);
+        String userInput;
+        while (true) {
+            System.out.println("Where would you like to put your symbol?(Input: 1-9)");
+            userInput = scanner.nextLine();
+            try {
+                if (isValidMove(board, Integer.parseInt(userInput))) {
+                    break;
+                } else {
+                    System.out.println(userInput + " is not valid move!");
+                }
+            } catch (NumberFormatException exception) {
+                System.err.println("You have to write a digit!");
+            }
+        }
+        placeMove(board, userInput, 'X');
     }
 
-    private static void playerMove(Board board, String userInput, char symbol) {
+    private static void placeMove(Board board, String userInput, char symbol) {
         switch (userInput) {
             case "1":
                 board.getBoard()[0][0] = symbol;
